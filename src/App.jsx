@@ -19,6 +19,7 @@ const App = () => {
 							image={movie.image}
 							year={movie.year}
 							rating={movie.rating}
+							tractors={movie.tractors}
 						/>
 					))}
 			</div>
