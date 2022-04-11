@@ -4,7 +4,7 @@ const MovieCard = ({ title, image, year, rating }) => {
 			<div className=''>
 				<img className='w-full block' src={image} />
 				<h3>{title}</h3>
-				<span>{rating}</span>
+				<span className='mr-2'>{rating}</span>
 				<span>{year}</span>
 			</div>
 		</div>

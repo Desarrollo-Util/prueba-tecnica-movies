@@ -1,27 +1,19 @@
-import MovieCard from './components/movie-card';
+import MoviesGrid from './components/movies-grid';
 import { useMoviesSearch } from './lib/hooks/use-movies-search';
 
 const App = () => {
-	const { movies, page, error, loading, setPage } = useMoviesSearch();
-
-	if (loading) return <p>Cargando...</p>;
-
-	if (error) return <p>{error}</p>;
+	const { movies, searchTerm, page, error, loading, setSearchTerm, setPage } =
+		useMoviesSearch();
 
 	return (
 		<div>
-			<div className='container container-xl mx-auto flex flex-wrap'>
-				{movies &&
-					movies.map(movie => (
-						<MovieCard
-							key={movie.id}
-							title={movie.title}
-							image={movie.image}
-							year={movie.year}
-							rating={movie.rating}
-						/>
-					))}
-			</div>
+			<input
+				type='text'
+				value={searchTerm}
+				onChange={ev => setSearchTerm(ev.target.value)}
+				placeholder='Buscar...'
+			></input>
+			<MoviesGrid movies={movies} loading={loading} error={error} />
 			<button onClick={() => setPage(page + 1)}>Página: {page}</button>
 		</div>
 	);

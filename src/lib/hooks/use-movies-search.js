@@ -1,12 +1,13 @@
 import { useEffect, useReducer } from 'react';
-import { searchTrendingMovies } from '../api/search-trending-movies';
+import { searchMoviesApi } from '../api/search-movies-api';
 import {
 	moviesSearchReducer,
 	MOVIES_SEARCH_ACTIONS,
 	MOVIES_SEARCH_INITIAL_STATE
 } from '../reducers/movies-search.reducer';
 
-const searchTrending = async (
+const searchMovies = async (
+	search,
 	page,
 	startSearch,
 	searchSuccess,
@@ -14,7 +15,7 @@ const searchTrending = async (
 ) => {
 	startSearch();
 
-	const { success, data, statusCode } = await searchTrendingMovies(page);
+	const { success, data, statusCode } = await searchMoviesApi(search, page);
 
 	if (success) searchSuccess(data.movies);
 	else searchError(`Error: ${statusCode}`);
@@ -43,6 +44,12 @@ export const useMoviesSearch = () => {
 			error
 		});
 
+	const setSearchTerm = searchTerm =>
+		setMoviesSearch({
+			type: MOVIES_SEARCH_ACTIONS.SET_SEARCH_TERM,
+			searchTerm
+		});
+
 	const setPage = page =>
 		setMoviesSearch({
 			type: MOVIES_SEARCH_ACTIONS.SET_PAGE,
@@ -50,8 +57,20 @@ export const useMoviesSearch = () => {
 		});
 
 	useEffect(() => {
-		searchTrending(moviesSearch.page, startSearch, searchSuccess, searchError);
-	}, [moviesSearch.page]);
+		const timeoutId = setTimeout(
+			() =>
+				searchMovies(
+					moviesSearch.searchTerm,
+					moviesSearch.page,
+					startSearch,
+					searchSuccess,
+					searchError
+				),
+			200
+		);
 
-	return { ...moviesSearch, setPage };
+		return () => clearTimeout(timeoutId);
+	}, [moviesSearch.searchTerm, moviesSearch.page]);
+
+	return { ...moviesSearch, setSearchTerm, setPage };
 };
