@@ -5,7 +5,7 @@ La prueba consistirá en realizar una mini-webapp en la que se mostrará un list
 ## Condiciones:
 
 - Desarrollar usando vite o nextjs
-- El buscador + listado en una ruta principial o /search
+- El buscador + listado en una ruta principal o /search
 - Otra ruta con las películas que se han valorado, en /mylist
 - Se puede utilizar cualquier librería de componentes, sea pública o propia.
 - El guardado de información debería hacerse con react-redux o los hooks useContext+useReducer. (Cualquier gestor de estados globales valdría)

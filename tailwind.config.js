@@ -15,7 +15,8 @@ module.exports = {
 			gray: {
 				DEFAULT: '#CFCFCF'
 			},
-			transparent: '#00000000'
+			transparent: '#00000000',
+			overlay: '#1d1e26c7'
 		},
 		extend: {
 			aspectRatio: {

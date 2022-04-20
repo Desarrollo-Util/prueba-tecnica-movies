@@ -1,6 +1,26 @@
-const MovieCard = ({ title, image, year, rating }) => {
+const MovieCard = ({
+	title,
+	image,
+	year,
+	rating,
+	landscapeImage,
+	description,
+	setPreviewMovie
+}) => {
 	return (
-		<div className='w-1/5 p-4'>
+		<div
+			className='w-1/5 p-4'
+			onClick={() =>
+				setPreviewMovie({
+					title,
+					image,
+					year,
+					rating,
+					landscapeImage,
+					description
+				})
+			}
+		>
 			<div
 				style={{
 					backgroundImage: `url(${image})`
