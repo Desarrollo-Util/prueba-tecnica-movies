@@ -1,0 +1,9 @@
+body {
+	@apply bg-bg;
+	@apply text-text;
+	font-family: 'Poppins', sans-serif;
+}
+
+input {
+	outline: none;
+}

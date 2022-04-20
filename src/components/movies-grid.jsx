@@ -6,7 +6,7 @@ const MoviesGrid = ({ movies, loading, error }) => {
 	if (error) return <p>{error}</p>;
 
 	return (
-		<div className='container container-xl mx-auto flex flex-wrap'>
+		<div className='flex flex-wrap'>
 			{movies &&
 				movies.map(movie => (
 					<MovieCard

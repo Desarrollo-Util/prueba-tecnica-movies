@@ -1,5 +1,5 @@
 import { API_HOST } from '../../constants/api';
-import { movieApiMapper } from '../mappers/movie-api-mapper';
+import { movieApiMapper } from '../mappers/movie-api.mapper';
 
 const SEARCH_MOVIES_PATH = '/search/movie';
 const TRENDING_MOVIES_PATH = '/trending/movie/day';
