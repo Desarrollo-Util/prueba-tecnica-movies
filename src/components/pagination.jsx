@@ -2,6 +2,8 @@ import ArrowLeft from './icons/arrow-left';
 import ArrowRight from './icons/arrow-right';
 
 const Pagination = ({ page, totalPages, setPage }) => {
+	if (!totalPages) return null;
+
 	const isBackDisabled = page === 1;
 	const isNextDisabled = page === totalPages;
 

@@ -73,7 +73,7 @@ export const useMoviesSearch = () => {
 			searchTimeout();
 			isInitialized.current = true;
 		} else {
-			const timeoutId = setTimeout(searchTimeout, 200);
+			const timeoutId = setTimeout(searchTimeout, 350);
 
 			return () => clearTimeout(timeoutId);
 		}

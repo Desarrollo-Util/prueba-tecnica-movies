@@ -1,9 +1,9 @@
+import { useState } from 'react';
+import Modal from '../components/modal';
+import MoviePreview from '../components/movie-preview';
 import MoviesGrid from '../components/movies-grid';
 import Pagination from '../components/pagination';
 import { useMoviesSearch } from '../lib/hooks/use-movies-search';
-import Modal from '../components/modal';
-import { useState } from 'react';
-import MoviePreview from '../components/movie-preview';
 
 const HomePage = () => {
 	const [previewMovie, setPreviewMovie] = useState();
