@@ -1,15 +1,13 @@
 const express = require('express');
-const dotenv = require('dotenv');
 const { test: validateUuid } = require('uuid-random');
+const { findUserById, findUserByEmail, addUser } = require('./bbdd');
+const dotenv = require('dotenv');
 dotenv.config();
 
 const expressApp = express();
 
 // Middleware
 expressApp.use(express.json());
-
-// Memory BBDD
-const users = [];
 
 // Regex validations
 const emailRegex =
@@ -37,20 +35,18 @@ expressApp.post('/register', (req, res) => {
 		return res.status(400).send('El formato de la contraseña no es correcto');
 
 	// Validar que el usuario es único en persistencia (id, email)
-	const existingUser = users.find(
-		user => user.id === id || user.email === email
-	);
+	const existingUser = findUserById(id) || findUserByEmail(email);
 	if (existingUser)
 		return res.status(409).send('El usuario ya se encuentra registrado');
 
-	users.push({
+	// Persistir en BBDD
+	addUser({
 		id,
 		name,
 		email,
 		password
 	});
 
-	console.log(users);
 	return res.send('El usuario se ha registrado de forma correcta');
 });
 
