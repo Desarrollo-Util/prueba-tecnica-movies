@@ -1,5 +1,5 @@
-const validateRegisterBody = require('./validate-register-body');
-const { findUserById, findUserByEmail, addUser } = require('./bbdd');
+const validateRegisterBody = require('../validations/validate-register-body');
+const { findUserById, findUserByEmail, addUser } = require('../ddbb');
 
 const userRegisterController = (req, res) => {
 	// Validación de campos

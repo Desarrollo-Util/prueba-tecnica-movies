@@ -1,11 +1,14 @@
+const { createServer } = require('http');
 const express = require('express');
-const registerRoutes = require('./routes');
+const registerUserRoutes = require('./routes/user-routes');
 
 const expressApp = express();
 
 // Middleware
 expressApp.use(express.json());
 
-registerRoutes(expressApp);
+registerUserRoutes(expressApp);
 
-module.exports = expressApp;
+const httpServer = createServer(expressApp);
+
+module.exports = httpServer;

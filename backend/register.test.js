@@ -3,6 +3,7 @@ const fetch = require('node-fetch');
 
 const app = require('./src/app');
 
+// Env variables
 const PORT = 3010;
 const ENDPOINT = `http://localhost:${PORT}/register`;
 
@@ -153,4 +154,8 @@ test('Register with bad email', async t => {
 	} catch (err) {
 		t.fail(err);
 	}
+});
+
+test.after(() => {
+	app.close();
 });
