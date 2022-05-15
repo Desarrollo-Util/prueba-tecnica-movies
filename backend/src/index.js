@@ -1,7 +1,6 @@
 const app = require('./app');
 const { MikroORM } = require('@mikro-orm/core');
 const dotenv = require('dotenv');
-const { userSchema } = require('./entities/user');
 dotenv.config();
 
 const bootstrap = async () => {
@@ -9,7 +8,7 @@ const bootstrap = async () => {
 		port: process.env.POSTGRESQL_PORT,
 		user: process.env.POSTGRESQL_USER,
 		password: process.env.POSTGRESQL_PASSWORD,
-		entities: [userSchema],
+		entities: ['./entities'],
 		dbName: 'pruebaTecnica',
 		type: 'postgresql'
 	});
