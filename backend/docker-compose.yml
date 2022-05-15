@@ -1,8 +1,9 @@
 version: '3.7'
 services:
-  mongodb-primary:
-    container_name: mongodb-dev
+  mongodb:
+    container_name: mongodb
     image: docker.io/bitnami/mongodb:latest
+    restart: always
     environment:
       - MONGODB_ADVERTISED_HOSTNAME=localhost
       - MONGODB_REPLICA_SET_MODE=primary
@@ -11,33 +12,31 @@ services:
       - MONGODB_REPLICA_SET_NAME=pruebatecnica
     ports:
       - 27017:27017
-    expose:
-      - 27017
 
-  mongo-express:
+  mongoexpress:
     container_name: mongoexpress
     image: mongo-express:latest
-    ports:
-      - 8081:8081
+    restart: always
     environment:
       ME_CONFIG_BASICAUTH_USERNAME: root
       ME_CONFIG_BASICAUTH_PASSWORD: admin
       ME_CONFIG_MONGODB_SERVER: mongodb-dev
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
       ME_CONFIG_MONGODB_ADMINPASSWORD: admin
+    ports:
+      - 8081:8081
     depends_on:
-      - mongodb-primary
-    links:
-      - mongodb-primary
+      - mongodb
 
   postgresql:
-    container_name: postgresql-dev
+    container_name: postgresql
     image: postgres:alpine
-    ports:
-      - 5432:5432
+    restart: always
     environment:
       - POSTGRES_USER=root
       - POSTGRES_PASSWORD=admin
+    ports:
+      - 5432:5432
 
   pgadmin:
     container_name: pgadmin4
@@ -48,3 +47,6 @@ services:
       PGADMIN_DEFAULT_PASSWORD: root
     ports:
       - "8083:80"
+    depends_on:
+      - postgresql
+    

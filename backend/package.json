@@ -6,8 +6,9 @@
 	"scripts": {
 		"dev": "nodemon src/index.js",
 		"test": "ava",
-		"docker-up": "docker-compose -p pruebaTecnica up -d",
-		"docker-down": "docker-compose -p pruebaTecnica down"
+		"docker:up": "docker-compose -p pruebaTecnica up -d",
+		"docker:down": "docker-compose -p pruebaTecnica down",
+		"docker:down-volumes": "docker-compose -p pruebaTecnica down -v"
 	},
 	"author": "",
 	"license": "ISC",
