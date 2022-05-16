@@ -1,23 +1,22 @@
 const validateRegisterBody = require('../validations/validate-register-body');
-const { findUserById, findUserByEmail, addUser } = require('../db');
-const { getEntityManager } = require('../config/initialize-orm');
+const UserRepository = require('../db');
 
 const userRegisterController = async (req, res) => {
 	// Validación de campos
 	const { user, error } = validateRegisterBody(req.body);
 	if (error) return res.status(400).send(error);
 
-	const entityManager = getEntityManager();
+	const userRepository = new UserRepository();
 
-	const existingUserById = await findUserById(entityManager, user.id);
+	const existingUserById = await userRepository.findById(user.id);
 	if (existingUserById) return res.status(409).send('Identificador duplicado');
 
-	const existingUserByEmail = await findUserByEmail(entityManager, user.email);
+	const existingUserByEmail = await userRepository.findByEmail(user.email);
 	if (existingUserByEmail)
 		return res.status(409).send('El email ya está en uso');
 
-	await addUser(entityManager, user);
-	await entityManager.flush();
+	await userRepository.create(user);
+	await userRepository.commit();
 
 	return res.send('El usuario se ha registrado de forma correcta');
 };

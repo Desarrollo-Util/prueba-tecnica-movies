@@ -1,23 +1,28 @@
+const { getEntityManager } = require('./config/initialize-orm');
 const { User } = require('./entities/user');
 
-const findUserById = async (entityManager, id) => {
-	const userRepository = entityManager.getRepository(User);
-	const user = await userRepository.findOne({ id });
+class UserRepository {
+	constructor() {
+		this._entityManager = getEntityManager();
+		this._userRepository = this._entityManager.getRepository(User);
+	}
 
-	return user;
-};
+	findById(id) {
+		return this._userRepository.findOne({ id });
+	}
 
-const findUserByEmail = async (entityManager, email) => {
-	const userRepository = entityManager.getRepository(User);
-	const user = await userRepository.findOne({ email });
+	findByEmail(email) {
+		return this._userRepository.findOne({ email });
+	}
 
-	return user;
-};
+	async create(user) {
+		const newUser = await this._userRepository.create(user);
+		this._userRepository.persist(newUser);
+	}
 
-const addUser = async (entityManager, user) => {
-	const userRepository = entityManager.getRepository(User);
-	const newUser = await userRepository.create(user);
-	userRepository.persist(newUser);
-};
+	commit() {
+		return this._entityManager.flush();
+	}
+}
 
-module.exports = { findUserById, findUserByEmail, addUser };
+module.exports = UserRepository;
