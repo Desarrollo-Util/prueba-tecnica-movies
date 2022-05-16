@@ -1,19 +1,14 @@
-const app = require('./app');
-const { MikroORM } = require('@mikro-orm/core');
 const dotenv = require('dotenv');
 dotenv.config();
 
-const bootstrap = async () => {
-	await MikroORM.init({
-		port: process.env.POSTGRESQL_PORT,
-		user: process.env.POSTGRESQL_USER,
-		password: process.env.POSTGRESQL_PASSWORD,
-		entities: ['./entities'],
-		dbName: 'pruebaTecnica',
-		type: 'postgresql'
-	});
+const { initializeHttpServer } = require('./config/initialize-http');
+const { initializeOrm } = require('./config/initialize-orm');
 
-	app.listen(process.env.PORT, () =>
+const bootstrap = async () => {
+	await initializeOrm();
+	const httpServer = initializeHttpServer();
+
+	httpServer.listen(process.env.PORT, () =>
 		console.log(
 			`Servidor de Express levantado en el puerto ${process.env.PORT}`
 		)
