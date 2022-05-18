@@ -1,5 +1,5 @@
-const { getEntityManager } = require('./config/initialize-orm');
-const { User } = require('./entities/user');
+const { getEntityManager } = require('../config/initialize-orm');
+const User = require('../../domain/entities/user');
 
 class UserRepository {
 	constructor() {

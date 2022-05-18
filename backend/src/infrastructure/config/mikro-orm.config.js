@@ -1,4 +1,4 @@
-const { userSchema } = require('../entities/user');
+const userSchema = require('../schemas/user-schema');
 const { SqlHighlighter } = require('@mikro-orm/sql-highlighter');
 
 /** @type {import('@mikro-orm/core').Options} */
@@ -9,7 +9,7 @@ const mikroORMConfig = {
 	entities: [userSchema],
 	dbName: 'postgres',
 	type: 'postgresql',
-	debug: true,
+	debug: false,
 	highlighter: new SqlHighlighter()
 };
 

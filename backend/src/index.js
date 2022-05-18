@@ -1,8 +1,10 @@
 const dotenv = require('dotenv');
 dotenv.config();
 
-const { initializeHttpServer } = require('./config/initialize-http');
-const { initializeOrm } = require('./config/initialize-orm');
+const {
+	initializeHttpServer
+} = require('./infrastructure/config/initialize-http');
+const { initializeOrm } = require('./infrastructure/config/initialize-orm');
 
 const bootstrap = async () => {
 	await initializeOrm();

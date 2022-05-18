@@ -3,7 +3,7 @@ const {
 	validateEmail,
 	validateName,
 	validatePassword
-} = require('./user-validation');
+} = require('../../domain/validations/user-validation');
 
 const validateRegisterBody = body => {
 	const { id, name, email, password } = body;

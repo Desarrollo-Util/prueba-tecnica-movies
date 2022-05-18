@@ -1,5 +1,6 @@
+const UserRepository = require('../repositories/user-repository');
+const validateLoginBody = require('../validations/validate-login-body');
 const validateRegisterBody = require('../validations/validate-register-body');
-const UserRepository = require('../db');
 
 const userRegisterController = async (req, res) => {
 	// Validación de campos
@@ -21,4 +22,21 @@ const userRegisterController = async (req, res) => {
 	return res.send('El usuario se ha registrado de forma correcta');
 };
 
-module.exports = { userRegisterController };
+const userLoginController = async (req, res) => {
+	// Validación de campos
+	const { loginData, error } = validateLoginBody(req.body);
+	if (error) return res.status(401).send(error);
+
+	const userRepository = new UserRepository();
+
+	const existingUserByEmail = await userRepository.findByEmail(loginData.email);
+	if (
+		!existingUserByEmail ||
+		existingUserByEmail.password !== loginData.password
+	)
+		return res.status(401).send('Las credenciales son incorrectas');
+
+	return res.send('Login correcto');
+};
+
+module.exports = { userRegisterController, userLoginController };
