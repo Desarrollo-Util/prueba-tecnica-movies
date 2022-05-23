@@ -4,22 +4,24 @@ const {
 	validateName,
 	validatePassword
 } = require('../../domain/validations/user-validation');
+const BadRequestException = require('../errors/bad-request.exception');
 
 const validateRegisterBody = body => {
 	const { id, name, email, password } = body;
 
-	if (!validateId(id)) return { error: 'El formato del id no es correcto' };
+	if (!validateId(id))
+		throw new BadRequestException('El formato del id no es correcto');
 
 	if (!validateEmail(email))
-		return { error: 'El formato del email no es correcto' };
+		throw new BadRequestException('El formato del email no es correcto');
 
 	if (!validateName(name))
-		return { error: 'El formato del nombre no es correcto' };
+		throw new BadRequestException('El formato del nombre no es correcto');
 
 	if (!validatePassword(password))
-		return { error: 'El formato de la contraseña no es correcto' };
+		throw new BadRequestException('El formato de la contraseña no es correcto');
 
-	return { user: { id, name, email, password } };
+	return { id, name, email, password };
 };
 
 module.exports = validateRegisterBody;

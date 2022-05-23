@@ -1,42 +1,37 @@
-const UserRepository = require('../repositories/user-repository');
+const {
+	registerUserService,
+	loginUserService
+} = require('../../application/services/user-services');
 const validateLoginBody = require('../validations/validate-login-body');
 const validateRegisterBody = require('../validations/validate-register-body');
+const { sign } = require('jsonwebtoken');
 
-const userRegisterController = async (req, res) => {
-	// Validación de campos
-	const { user, error } = validateRegisterBody(req.body);
-	if (error) return res.status(400).send(error);
+const userRegisterController = async (req, res, next) => {
+	try {
+		const user = validateRegisterBody(req.body);
+		await registerUserService(user);
 
-	const userRepository = new UserRepository();
-
-	const existingUserById = await userRepository.findById(user.id);
-	if (existingUserById) return res.status(409).send('Identificador duplicado');
-
-	const existingUserByEmail = await userRepository.findByEmail(user.email);
-	if (existingUserByEmail)
-		return res.status(409).send('El email ya está en uso');
-
-	await userRepository.create(user);
-	await userRepository.commit();
-
-	return res.send('El usuario se ha registrado de forma correcta');
+		return res.send('El usuario se ha registrado de forma correcta');
+	} catch (err) {
+		return next(err);
+	}
 };
 
-const userLoginController = async (req, res) => {
-	// Validación de campos
-	const { loginData, error } = validateLoginBody(req.body);
-	if (error) return res.status(401).send(error);
+const userLoginController = async (req, res, next) => {
+	try {
+		const { email, password } = validateLoginBody(req.body);
+		const id = await loginUserService(email, password);
 
-	const userRepository = new UserRepository();
+		const jwt = sign({ id }, process.env.JWT_SECRET_KEY, {
+			algorithm: 'HS512',
+			expiresIn: '7d'
+		});
 
-	const existingUserByEmail = await userRepository.findByEmail(loginData.email);
-	if (
-		!existingUserByEmail ||
-		existingUserByEmail.password !== loginData.password
-	)
-		return res.status(401).send('Las credenciales son incorrectas');
-
-	return res.send('Login correcto');
+		res.cookie('jwt', jwt, { maxAge: 900000, httpOnly: true });
+		return res.send('Login correcto');
+	} catch (err) {
+		return next(err);
+	}
 };
 
 module.exports = { userRegisterController, userLoginController };
